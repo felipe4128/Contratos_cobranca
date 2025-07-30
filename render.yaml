@@ -3,7 +3,5 @@ services:
     name: contratos-cobranca
     env: python
     plan: free
-    # Usa pip3 para instalar no Python3
-    buildCommand: pip3 install -r requirements.txt
-    # Usa python3 para rodar o app
+    buildCommand: pip install -r requirements.txt
     startCommand: python3 app.py
