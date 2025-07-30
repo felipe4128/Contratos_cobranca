@@ -41,7 +41,6 @@ class Parcela(db.Model):
     valor = db.Column(db.Float)
     vencimento = db.Column(db.Date)
     quitada = db.Column(db.Boolean, default=False)
-
     contrato = db.relationship('Contrato', backref=db.backref('parcelas_list', lazy=True))
 
 @app.before_request
