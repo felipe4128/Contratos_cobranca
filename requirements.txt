@@ -1,4 +1,4 @@
 Flask
-Flask‑SQLAlchemy
+Flask-SQLAlchemy
 pandas
 openpyxl
