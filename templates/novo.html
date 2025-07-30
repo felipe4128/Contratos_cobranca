@@ -1,50 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Novo Contrato</title>
-  <style>
-    :root { --cor-primaria:#00AE9D;--cor-escura:#003641;--cor-secundaria:#C9D200;}
-    body{font-family:Arial,sans-serif;margin:20px;}
-    header,footer{background:var(--cor-escura);color:#fff;padding:10px;text-align:center;}
-    label{display:block;margin-top:8px;font-weight:bold;}
-    input,textarea{width:100%;padding:6px;margin-top:2px;box-sizing:border-box;}
-    button{background:var(--cor-primaria);color:#fff;border:none;padding:8px 16px;margin-top:10px;border-radius:4px;cursor:pointer;}
-    button:hover{background:var(--cor-secundaria);}
-  </style>
-</head>
-<body>
-<header><h1>Novo Contrato</h1></header>
-<form method="POST">
-  {% for field,label,type in [
-    ('data_contrato','Data Contrato','date'),('cliente','Cliente','text'),
-    ('numero','Número','text'),('tipo_contrato','Tipo Contrato','text'),
-    ('garantia','Garantia','text'),('valor','Valor','number'),
-    ('parcelas','Parcelas','number'),('vencimento_parcelas','Vencimento Parcelas','date'),
-    ('baixa_48_meses','Baixa 48 Meses','number'),('valor_abatido','Valor Abatido','number'),
-    ('ganho','Ganho','number'),('custas','Custas','number'),
-    ('custas_deduzidas','Custas Deduzidas','number'),('protesto','Protesto','number'),
-    ('protesto_deduzido','Protesto Deduzido','number'),('honorario','Honorário','number'),
-    ('honorario_repassado','Honorário Repassado','number'),
-    ('alvara','Alvará','number'),('alvara_recebido','Alvará Recebido','number'),
-    ('valor_entrada','Valor Entrada','number'),('vencimento_entrada','Vencimento Entrada','date'),
-    ('valor_parcelas','Valor Parcelas','number'),('qtd_boletos','Qtd Boletos','number'),
-    ('valor_pg_boleto','Valor Pg Boleto','number'),
-    ('data_pg_boleto','Data Pgto Boleto','date'),('data_baixa','Data Baixa','date'),
-    ('obs_contabilidade','Obs Contabilidade','textarea'),
-    ('obs_contas_receber','Obs Contas a Receber','textarea'),
-    ('valor_repassado_escritorio','Valor Repassado Escritório','number')
-  ] %}
-    <label>{{ label }}:</label>
-    {% if type=='textarea' %}
-      <textarea name="{{ field }}"></textarea>
-    {% else %}
-      <input type="{{ type }}" name="{{ field }}" {% if type=='number' %}step="0.01"{% endif %}>
-    {% endif %}
-  {% endfor %}
-  <button type="submit">Salvar</button>
+{% extends "base.html" %}
+{% block title %}Novo Contrato{% endblock %}
+{% block content %}
+<form method="post">
+<label>Data Contrato: <input type="date" name="data_contrato"></label>
+<label>Cliente: <input type="text" name="cliente"></label>
+<label>Contrato (número): <input type="text" name="numero"></label>
+<label>Tipo Contrato: <input type="text" name="tipo_contrato"></label>
+<label>Garantia: <input type="text" name="garantia"></label>
+<label>Valor: <input type="number" name="valor" step="0.01"></label>
+<label>Parcelas: <input type="number" name="parcelas"></label>
+<label>Vencimento 1ª Parcela: <input type="date" name="vencimento_parcelas"></label>
+<button class="btn" type="submit">Salvar</button>
 </form>
-<a href="{{ url_for('index') }}">Voltar</a>
-<footer>Sistema desenvolvido com Flask</footer>
-</body>
-</html>
+{% endblock %}

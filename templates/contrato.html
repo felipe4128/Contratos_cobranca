@@ -1,53 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Contrato {{ contrato.id }}</title>
-  <style>
-    :root { --cor-primaria:#00AE9D;--cor-escura:#003641;--cor-secundaria:#C9D200;}
-    body{font-family:Arial,sans-serif;margin:20px;}
-    header,footer{background:var(--cor-escura);color:#fff;padding:10px;text-align:center;}
-    table{width:100%;border-collapse:collapse;margin-top:10px;}
-    th{background:var(--cor-escura);color:white;padding:8px;}
-    td{border:1px solid #ddd;padding:8px;}
-    button,a.button{background:var(--cor-primaria);color:#fff;border:none;padding:6px 12px;border-radius:4px;text-decoration:none;cursor:pointer;}
-    a.button:hover,button:hover{background:var(--cor-secundaria);}
-  </style>
-</head>
-<body>
-<header><h1>Contrato {{ contrato.id }}</h1></header>
-<form method="POST">
-  {% for field,value in contrato.__dict__.items() if not field.startswith('_') and field!='id' %}
-    <label>{{ field.replace('_',' ').title() }}:</label>
-    {% if 'date' in field or 'vencimento' in field %}
-      <input type="date" name="{{ field }}" value="{{ value.strftime('%Y-%m-%d') if value else '' }}"><br>
-    {% elif field.startswith('obs') %}
-      <textarea name="{{ field }}">{{ value or '' }}</textarea><br>
-    {% else %}
-      <input type="text" name="{{ field }}" value="{{ value or '' }}"><br>
-    {% endif %}
-  {% endfor %}
-  <button type="submit">Salvar</button>
+{% extends "base.html" %}
+{% block title %}Contrato {{contrato.id}}{% endblock %}
+{% block content %}
+<h2>Contrato {{contrato.id}}</h2>
+<form method="post">
+<label>Data Contrato: <input type="date" name="data_contrato" value="{{ contrato.data_contrato }}"></label>
+<label>Cliente: <input type="text" name="cliente" value="{{ contrato.cliente }}"></label>
+<label>Contrato: <input type="text" name="numero" value="{{ contrato.numero }}"></label>
+<label>Tipo Contrato: <input type="text" name="tipo_contrato" value="{{ contrato.tipo_contrato }}"></label>
+<label>Garantia: <input type="text" name="garantia" value="{{ contrato.garantia }}"></label>
+<label>Valor: <input type="number" name="valor" step="0.01" value="{{ contrato.valor }}"></label>
+<label>Parcelas: <input type="number" name="parcelas" value="{{ contrato.parcelas }}"></label>
+<label>Parc Restantes: <input type="number" name="parcelas_restantes" value="{{ contrato.parcelas_restantes }}"></label>
+<label>Vencimento Parcela: <input type="date" name="vencimento_parcelas" value="{{ contrato.vencimento_parcelas }}"></label>
+<button class="btn" type="submit">Atualizar</button>
 </form>
 
-<h2>Parcelas</h2>
+<h3>Parcelas</h3>
 <table>
-  <tr><th>Num</th><th>Valor</th><th>Vencimento</th><th>Quitada</th><th>Ação</th></tr>
-  {% for p in parcelas %}
-  <tr>
-    <td>{{ p.numero }}</td>
-    <td>{{ p.valor }}</td>
-    <td>{{ p.vencimento.strftime('%d/%m/%Y') if p.vencimento else '' }}</td>
-    <td>{{ 'Sim' if p.quitada else 'Não' }}</td>
-    <td>
-      {% if not p.quitada %}
-      <form method="POST" action="{{ url_for('quitar_parcela', id=p.id) }}"><button type="submit">Quitar</button></form>
-      {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
+  <thead><tr><th>#</th><th>Valor</th><th>Vencimento</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for p in parcelas %}
+    <tr>
+      <td>{{p.numero}}</td>
+      <td>{{p.valor}}</td>
+      <td>{{p.vencimento}}</td>
+      <td>
+        {% if not p.quitada %}
+        <form method="post" action="{{ url_for('quitar_parcela', id=p.id) }}">
+          <button class="btn" type="submit">Quitar</button>
+        </form>
+        {% else %}Quitada{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
-<a href="{{ url_for('index') }}" class="button">Voltar</a>
-<footer>Sistema desenvolvido com Flask</footer>
-</body>
-</html>
+{% endblock %}
