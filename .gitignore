@@ -1,8 +1,0 @@
-# Ambiente virtual
-.venv/
-# Cache de Python
-__pycache__/
-*.pyc
-# Banco de dados local e arquivos gerados
-credito.db
-*.xlsx
