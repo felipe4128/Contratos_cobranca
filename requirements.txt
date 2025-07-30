@@ -4,4 +4,3 @@ pandas>=2.3.1
 openpyxl>=3.1.5
 python-dateutil>=2.9.0
 SQLAlchemy>=2.0.42
-gunicorn==23.0.0
