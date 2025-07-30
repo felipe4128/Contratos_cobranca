@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: contratos-cobranca
+    name: contratos‑cobranca     # o nome do serviço no Render
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
+    startCommand: python3 app.py
