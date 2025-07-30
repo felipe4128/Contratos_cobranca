@@ -41,6 +41,7 @@ class Parcela(db.Model):
     valor = db.Column(db.Float)
     vencimento = db.Column(db.Date)
     quitada = db.Column(db.Boolean, default=False)
+
     contrato = db.relationship('Contrato', backref=db.backref('parcelas_list', lazy=True))
 
 @app.before_request
@@ -150,6 +151,5 @@ def exportar():
     return send_file(path, as_attachment=True)
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

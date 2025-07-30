@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: contratos-cobranca       # o slug do seu serviço
-    env: python                    # força o ambiente Python
+    name: contratos-cobranca
+    env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: python3 app.py   # use python3 para garantir
+    startCommand: python3 -m gunicorn app:app --bind 0.0.0.0:$PORT
