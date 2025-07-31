@@ -1,26 +1,21 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container py-4">
-  <h2>Novo Contrato</h2>
-  <form method="post">
-    <div class="row mb-3">
-      <div class="col"><label>CPF</label><input class="form-control" name="cpf"></div>
-      <div class="col"><label>Data Contrato</label><input type="date" class="form-control" name="data_contrato"></div>
-    </div>
-    <div class="mb-3"><label>Cliente</label><input class="form-control" name="cliente"></div>
-    <div class="row mb-3">
-      <div class="col"><label>Contrato (número)</label><input class="form-control" name="numero"></div>
-      <div class="col"><label>Tipo Contrato</label><input class="form-control" name="tipo_contrato"></div>
-    </div>
-    <div class="row mb-3">
-      <div class="col"><label>Garantia</label><input class="form-control" name="garantia"></div>
-      <div class="col"><label>Valor</label><input type="number" step="0.01" class="form-control" name="valor"></div>
-    </div>
-    <div class="row mb-3">
-      <div class="col"><label>Parcelas</label><input type="number" class="form-control" name="parcelas"></div>
-      <div class="col"><label>Vencimento 1ª Parcela</label><input type="date" class="form-control" name="vencimento_parcelas"></div>
-    </div>
-    <button class="btn btn-success">Salvar</button>
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Novo Contrato</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <h1>Novo Contrato</h1>
+  <form method="post" class="row g-3">
+    <div class="col-md-4"><label>CPF</label><input name="cpf" class="form-control"></div>
+    <div class="col-md-4"><label>Cliente</label><input name="cooperado" class="form-control"></div>
+    <div class="col-md-4"><label>Contrato</label><input name="numero" class="form-control"></div>
+    <div class="col-md-4"><label>Tipo</label><input name="tipo_contrato" class="form-control"></div>
+    <div class="col-md-4"><label>Garantia</label><input name="garantia" class="form-control"></div>
+    <div class="col-md-4"><label>Valor Contrato</label><input name="valor" class="form-control" type="number" step="0.01"></div>
+    <div class="col-md-4"><label>Parcelas</label><input name="parcelas" class="form-control" type="number"></div>
+    <button class="btn btn-success mt-3">Salvar</button>
   </form>
-</div>
-{% endblock %}
+</body>
+</html>
