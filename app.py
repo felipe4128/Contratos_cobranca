@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import pandas as pd
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///credito.db'
@@ -8,41 +10,41 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class Contrato(db.Model):
-    id                           = db.Column(db.Integer,   primary_key=True)
-    cpf                          = db.Column(db.String(14),nullable=True)
-    data_contrato                = db.Column(db.Date,     nullable=True)
-    cliente                      = db.Column(db.String(100),nullable=True)
-    numero                       = db.Column(db.String(50),nullable=True)
-    tipo_contrato                = db.Column(db.String(50),nullable=True)
-    cooperado                    = db.Column(db.String(100), nullable=True)
-    garantia                     = db.Column(db.String(100), nullable=True)
-    valor                        = db.Column(db.Float,   nullable=True)
-    valor_contrato_sistema       = db.Column(db.Float,   nullable=True)
-    baixa_acima_48_meses         = db.Column(db.Boolean, nullable=True, default=False)
-    valor_abatido                = db.Column(db.Float,   nullable=True)
-    ganho                        = db.Column(db.Float,   nullable=True)
-    custas                       = db.Column(db.Float,   nullable=True)
-    custas_deduzidas             = db.Column(db.Float,   nullable=True)
-    protesto                     = db.Column(db.Float,   nullable=True)
-    protesto_deduzido            = db.Column(db.Float,   nullable=True)
-    honorario                    = db.Column(db.Float,   nullable=True)
-    honorario_repassado          = db.Column(db.Float,   nullable=True)
-    alvara                       = db.Column(db.Float,   nullable=True)
-    alvara_recebido              = db.Column(db.Float,   nullable=True)
-    valor_entrada                = db.Column(db.Float,   nullable=True)
-    vencimento_entrada           = db.Column(db.Date,    nullable=True)
-    parcelas                     = db.Column(db.Integer, default=0)
-    parcelas_restantes           = db.Column(db.Integer, default=0)
-    valor_das_parcelas           = db.Column(db.Float,   nullable=True)
-    vencimento_parcelas          = db.Column(db.Date,    nullable=True)
-    quantidade_boletos_emitidos  = db.Column(db.Integer, nullable=True)
-    valor_pg_com_boleto          = db.Column(db.Float,   nullable=True)
-    data_pg_boleto               = db.Column(db.Date,    nullable=True)
-    data_baixa                   = db.Column(db.Date,    nullable=True)
-    demais_info                  = db.Column(db.Text,    nullable=True)
-    obs_contabilidade            = db.Column(db.Text,    nullable=True)
-    obs_contas_receber           = db.Column(db.Text,    nullable=True)
-    valor_repassar_escritorio    = db.Column(db.Float,   nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    cpf = db.Column(db.String(14), nullable=True)
+    data_contrato = db.Column(db.Date, nullable=True)
+    cliente = db.Column(db.String(100), nullable=True)
+    numero = db.Column(db.String(50), nullable=True)
+    tipo_contrato = db.Column(db.String(50), nullable=True)
+    cooperado = db.Column(db.String(100), nullable=True)
+    garantia = db.Column(db.String(100), nullable=True)
+    valor = db.Column(db.Float, nullable=True)
+    valor_contrato_sistema = db.Column(db.Float, nullable=True)
+    baixa_acima_48_meses = db.Column(db.Boolean, nullable=True, default=False)
+    valor_abatido = db.Column(db.Float, nullable=True)
+    ganho = db.Column(db.Float, nullable=True)
+    custas = db.Column(db.Float, nullable=True)
+    custas_deduzidas = db.Column(db.Float, nullable=True)
+    protesto = db.Column(db.Float, nullable=True)
+    protesto_deduzido = db.Column(db.Float, nullable=True)
+    honorario = db.Column(db.Float, nullable=True)
+    honorario_repassado = db.Column(db.Float, nullable=True)
+    alvara = db.Column(db.Float, nullable=True)
+    alvara_recebido = db.Column(db.Float, nullable=True)
+    valor_entrada = db.Column(db.Float, nullable=True)
+    vencimento_entrada = db.Column(db.Date, nullable=True)
+    parcelas = db.Column(db.Integer, default=0)
+    parcelas_restantes = db.Column(db.Integer, default=0)
+    valor_das_parcelas = db.Column(db.Float, nullable=True)
+    vencimento_parcelas = db.Column(db.Date, nullable=True)
+    quantidade_boletos_emitidos = db.Column(db.Integer, nullable=True)
+    valor_pg_com_boleto = db.Column(db.Float, nullable=True)
+    data_pg_boleto = db.Column(db.Date, nullable=True)
+    data_baixa = db.Column(db.Date, nullable=True)
+    demais_info = db.Column(db.Text, nullable=True)
+    obs_contabilidade = db.Column(db.Text, nullable=True)
+    obs_contas_receber = db.Column(db.Text, nullable=True)
+    valor_repassar_escritorio = db.Column(db.Float, nullable=True)
 
 @app.before_request
 def before_request():
@@ -56,6 +58,7 @@ def index():
 @app.route('/novo', methods=['GET', 'POST'])
 def novo():
     if request.method == 'POST':
+        # Read form data...
         cpf = request.form.get('cpf')
         data_str = request.form.get('data_contrato')
         data_contrato = datetime.strptime(data_str, '%Y-%m-%d') if data_str else None
@@ -162,6 +165,52 @@ def editar_info(id):
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('info.html', contrato=contrato)
+
+@app.route('/exportar')
+def exportar():
+    contratos = Contrato.query.all()
+    rows = []
+    for c in contratos:
+        rows.append({
+            'CPF': c.cpf,
+            'Cliente': c.cliente,
+            'Contrato': c.numero,
+            'Tipo': c.tipo_contrato,
+            'Cooperado': c.cooperado,
+            'Garantia': c.garantia,
+            'Valor': c.valor,
+            'Valor no Sistema': c.valor_contrato_sistema,
+            'Baixa >48m': c.baixa_acima_48_meses,
+            'Valor Abatido': c.valor_abatido,
+            'Ganho': c.ganho,
+            'Custas': c.custas,
+            'Custas Deduzidas': c.custas_deduzidas,
+            'Protesto': c.protesto,
+            'Protesto Deduzido': c.protesto_deduzido,
+            'Honorário': c.honorario,
+            'Honorário Repassado': c.honorario_repassado,
+            'Alvará': c.alvara,
+            'Alvará Recebido': c.alvara_recebido,
+            'Valor Entrada': c.valor_entrada,
+            'Venc. Entrada': c.vencimento_entrada,
+            'Parcelas': c.parcelas,
+            'Parcelas Restantes': c.parcelas_restantes,
+            'Valor p/ Parcela': c.valor_das_parcelas,
+            'Venc. Parcela': c.vencimento_parcelas,
+            'Boletos Emitidos': c.quantidade_boletos_emitidos,
+            'Valor pg. Boleto': c.valor_pg_com_boleto,
+            'Data pg. Boleto': c.data_pg_boleto,
+            'Data da Baixa': c.data_baixa,
+            'Obs. Contab.': c.obs_contabilidade,
+            'Obs. Cx Receb.': c.obs_contas_receber,
+            'Repasse Escritório': c.valor_repassar_escritorio
+        })
+    df = pd.DataFrame(rows)
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Contratos')
+    output.seek(0)
+    return send_file(output, download_name='contratos.xlsx', as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -9,28 +9,25 @@
 <div class="container mt-4">
   <h1>Info: Contrato {{ contrato.numero }}</h1>
   <form method="post">
-    <!-- campos adicionais preenchidos -->
     <div class="row mb-3">
-      <div class="col"><label class="form-label">Cooperado</label>
-        <input class="form-control" name="cooperado" value="{{ contrato.cooperado or '' }}"></div>
-      <div class="col"><label class="form-label">Garantia</label>
-        <input class="form-control" name="garantia" value="{{ contrato.garantia or '' }}"></div>
+      <div class="col"><label class="form-label">Cooperado</label><input class="form-control" name="cooperado" value="{{ contrato.cooperado or '' }}"></div>
+      <div class="col"><label class="form-label">Garantia</label><input class="form-control" name="garantia" value="{{ contrato.garantia or '' }}"></div>
     </div>
     <div class="row mb-3">
-      <div class="col"><label class="form-label">Valor do Contrato no Sistema</label>
-        <input type="number" step="0.01" class="form-control" name="valor_contrato_sistema" value="{{ contrato.valor_contrato_sistema or '' }}"></div>
+      <div class="col"><label class="form-label">Valor</label><input type="number" step="0.01" class="form-control" name="valor" value="{{ contrato.valor or '' }}"></div>
+      <div class="col"><label class="form-label">Valor no Sistema</label><input type="number" step="0.01" class="form-control" name="valor_contrato_sistema" value="{{ contrato.valor_contrato_sistema or '' }}"></div>
       <div class="col form-check align-self-end">
-        <input type="checkbox" class="form-check-input" name="baixa_acima_48_meses" id="baixa48" {% if contrato.baixa_acima_48_meses %}checked{% endif %}>
-        <label class="form-check-label" for="baixa48">Baixa acima de 48 meses</label>
+        <input type="checkbox" class="form-check-input" name="baixa_acima_48_meses" {% if contrato.baixa_acima_48_meses %}checked{% endif %}>
+        <label class="form-check-label">Baixa >48m</label>
       </div>
     </div>
-    <!-- continue para todos os campos listados -->
+    <!-- Continue other fields -->
     <div class="mb-3">
-      <label class="form-label">Observações para Contabilidade</label>
+      <label class="form-label">Observações Contabilidade</label>
       <textarea class="form-control" name="obs_contabilidade">{{ contrato.obs_contabilidade }}</textarea>
     </div>
     <div class="mb-3">
-      <label class="form-label">Observações para Contas a Receber</label>
+      <label class="form-label">Observações Contas a Receber</label>
       <textarea class="form-control" name="obs_contas_receber">{{ contrato.obs_contas_receber }}</textarea>
     </div>
     <button type="submit" class="btn btn-success">Salvar</button>
