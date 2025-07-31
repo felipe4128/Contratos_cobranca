@@ -1,20 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="{{ url_for('novo') }}" class="btn btn-success">Novo Contrato</a>
-    <a href="{{ url_for('exportar') }}" class="btn btn-primary">Exportar Excel</a>
-  </div>
-  <table class="table table-striped">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th>CPF</th>
         <th>Cliente</th>
         <th>Contrato</th>
         <th>Tipo</th>
-        <th>Valor Contrato</th>
+        <th>Valor</th>
         <th>Valor Pago</th>
         <th>Parcelas</th>
+        <th>Info</th>
       </tr>
     </thead>
     <tbody>
@@ -24,11 +21,16 @@
         <td>{{ c.cliente }}</td>
         <td>{{ c.numero }}</td>
         <td>{{ c.tipo_contrato }}</td>
-        <td>R$ {{ "%.2f"|format(c.valor or 0) }}</td>
+        <td>R$ {{ "%.2f"|format(c.valor) }}</td>
         <td>R$ {{ "%.2f"|format(valor_pago[c.id] or 0) }}</td>
         <td>
-          <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-outline-primary btn-sm">
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('ver_contrato', id=c.id) }}">
             Parcelas
+          </a>
+        </td>
+        <td>
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('editar_info', id=c.id) }}">
+            Info
           </a>
         </td>
       </tr>
