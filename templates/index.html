@@ -3,14 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <title>Sistemas de Cobrança</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+  <style>
+    header {
+      background-color: #005a44;
+      color: #fff;
+      padding: 1rem;
+    }
+    footer {
+      background-color: #005a44;
+      color: #fff;
+      text-align: center;
+      padding: 0.5rem;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
-  <div class="container py-4">
-    <h1 class="mb-4">Sistemas de Cobrança</h1>
+  <header>
+    <div class="container">
+      <h1 class="mb-0">Sistemas de Cobrança</h1>
+    </div>
+  </header>
+
+  <main class="container py-4">
     <div class="mb-3">
       <a href="{{ url_for('novo') }}" class="btn btn-success">Novo Contrato</a>
     </div>
@@ -18,22 +34,20 @@
       <table class="table table-striped align-middle">
         <thead>
           <tr>
-            <th scope="col">Selecionar</th>
-            <th scope="col">ID</th>
-            <th scope="col">Cliente</th>
-            <th scope="col">Contrato</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Garantia</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Ações</th>
+            <th>Selecionar</th>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Contrato</th>
+            <th>Tipo</th>
+            <th>Garantia</th>
+            <th>Valor</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for c in contratos %}
           <tr>
-            <td>
-              <input type="checkbox" name="ids" value="{{ c.id }}">
-            </td>
+            <td><input type="checkbox" name="ids" value="{{ c.id }}"></td>
             <td>{{ c.id }}</td>
             <td>{{ c.cliente }}</td>
             <td>{{ c.numero }}</td>
@@ -41,12 +55,8 @@
             <td>{{ c.garantia }}</td>
             <td>R$ {{ "%.2f"|format(c.valor or 0) }}</td>
             <td>
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">
-                Detalhes
-              </a>
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-info">
-                Parcelas
-              </a>
+              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Ver</a>
+              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-info">Parcelas</a>
             </td>
           </tr>
           {% else %}
@@ -56,10 +66,17 @@
           {% endfor %}
         </tbody>
       </table>
+
       <button type="submit" class="btn btn-danger">Excluir Selecionados</button>
       <a href="{{ url_for('exportar') }}" class="btn btn-secondary">Exportar Excel</a>
     </form>
-  </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      Desenvolvido com Flask
+    </div>
+  </footer>
 </body>
 </html>
 
