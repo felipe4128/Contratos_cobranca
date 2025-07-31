@@ -1,32 +1,29 @@
-<!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="utf-8">
-  <title>Contrato {{ contrato.numero }}</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="p-4">
-  <h1>Contrato {{ contrato.numero }}</h1>
-  <table class="table table-striped">
-    <thead><tr><th>#</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr></thead>
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h2>Parcelas do Contrato {{ contrato.numero }}</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>#</th><th>Vencimento</th><th>Valor</th><th>Quitada?</th></tr>
+    </thead>
     <tbody>
       {% for p in parcelas %}
       <tr>
         <td>{{ p.numero }}</td>
         <td>{{ p.vencimento.strftime('%d/%m/%Y') }}</td>
-        <td>R$ {{ '%.2f'|format(p.valor) }}</td>
+        <td>R$ {{ "%.2f"|format(p.valor) }}</td>
         <td>
-          {% if not p.quitada %}
-            <form method="post" action="{{ url_for('quitar_parcela', id=p.id) }}">
-              <button class="btn btn-sm btn-success">Quitar</button>
-            </form>
+          {% if p.quitada %}
+            ✅
           {% else %}
-            ✔
+            <form method="post" action="{{ url_for('quitar_parcela', id=p.id) }}">
+              <button class="btn btn-sm btn-primary">Quitar</button>
+            </form>
           {% endif %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-</body>
-</html>
+</div>
+{% endblock %}
