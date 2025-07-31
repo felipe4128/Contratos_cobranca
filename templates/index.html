@@ -17,19 +17,12 @@
       padding: 0.5rem;
       margin-top: 2rem;
     }
-    /* força todos os botões no verde primário */
-    .btn-success,
-    .btn-primary,
-    .btn-secondary,
-    .btn-danger {
+    .btn-success, .btn-primary {
       background-color: {{ cor_primaria }} !important;
       border-color: {{ cor_primaria }} !important;
       color: #fff !important;
     }
-    .btn-success:hover,
-    .btn-primary:hover,
-    .btn-secondary:hover,
-    .btn-danger:hover {
+    .btn-success:hover, .btn-primary:hover {
       background-color: {{ cor_escura }} !important;
       border-color: {{ cor_escura }} !important;
     }
@@ -45,47 +38,50 @@
   <main class="container py-4">
     <div class="mb-3">
       <a href="{{ url_for('novo') }}" class="btn btn-success">Novo Contrato</a>
-    </div>
-    <form method="post" action="{{ url_for('deletar') }}">
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr>
-            <th>Selecionar</th>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Contrato</th>
-            <th>Tipo</th>
-            <th>Garantia</th>
-            <th>Valor</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in contratos %}
-          <tr>
-            <td><input type="checkbox" name="ids" value="{{ c.id }}"></td>
-            <td>{{ c.id }}</td>
-            <td>{{ c.cliente }}</td>
-            <td>{{ c.numero }}</td>
-            <td>{{ c.tipo_contrato }}</td>
-            <td>{{ c.garantia }}</td>
-            <td>R$ {{ "%.2f"|format(c.valor or 0) }}</td>
-            <td>
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Ver</a>
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Parcelas</a>
-            </td>
-          </tr>
-          {% else %}
-          <tr>
-            <td colspan="8" class="text-center">Nenhum contrato cadastrado.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <button type="submit" class="btn btn-success">Excluir Selecionados</button>
       <a href="{{ url_for('exportar') }}" class="btn btn-success">Exportar Excel</a>
-    </form>
+    </div>
+
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>CPF</th>
+          <th>Cliente</th>
+          <th>Contrato</th>
+          <th>Tipo</th>
+          <th>Valor do Contrato</th>
+          <th>Valor Pago</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contratos %}
+        <tr>
+          <td>{{ c.cliente }}</td>  {# aqui usamos o campo `cliente` para CPF #}
+          <td>{{ c.cliente }}</td>  {# se você tiver um campo separado para nome, substitua aqui #}
+          <td>{{ c.numero }}</td>
+          <td>{{ c.tipo_contrato }}</td>
+          <td>R$ {{ "%.2f"|format(c.valor or 0) }}</td>
+          <td>
+            R$ {{
+              c.parcelas_list
+                | selectattr('quitada')
+                | map(attribute='valor')
+                | sum
+                | round(2)
+            }}
+          </td>
+          <td>
+            <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Ver</a>
+            <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Parcelas</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center">Nenhum contrato cadastrado.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </main>
 
   <footer>
