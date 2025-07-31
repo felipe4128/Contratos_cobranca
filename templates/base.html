@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>{% block title %}{% endblock %}</title>
-  <style>
-    body { margin:0; font-family:Arial,sans-serif; }
-    .header, .footer { background:{{cor_escura}}; color:#fff; padding:1rem; }
-    .btn { background:{{cor_primaria}}; color:#fff; padding:0.5rem 1rem; text-decoration:none; border:none; border-radius:4px; cursor:pointer; }
-    table { width:100%; border-collapse:collapse; margin:1rem 0; }
-    th, td { border:1px solid #ccc; padding:0.5rem; text-align:left; }
-    label { display:block; margin:0.5rem 0; }
-    input, select { padding:0.3rem; width:100%; max-width:300px; }
-    form { margin:1rem 0; }
-  </style>
-</head>
-<body>
-<div class="header"><h1>Sistemas de Cobrança</h1></div>
-<div class="content">{% block content %}{% endblock %}</div>
-<div class="footer"><p>Desenvolvido com Flask</p></div>
-</body>
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Sistemas de Cobrança{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark mb-4">
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">Sistemas de Cobrança</span>
+      </div>
+    </nav>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+      Desenvolvido com Flask
+    </footer>
+  </body>
 </html>
