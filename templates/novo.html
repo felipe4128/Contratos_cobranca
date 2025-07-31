@@ -14,7 +14,7 @@
     <div class="mb-3"><label class="form-label">Cliente</label><input class="form-control" name="cliente"></div>
     <div class="mb-3"><label class="form-label">Número Contrato</label><input class="form-control" name="numero"></div>
     <div class="mb-3"><label class="form-label">Tipo Contrato</label><input class="form-control" name="tipo_contrato"></div>
-    <!-- Campos adicionais -->
+
     <div class="row mb-3">
       <div class="col"><label class="form-label">Cooperado</label><input class="form-control" name="cooperado"></div>
       <div class="col"><label class="form-label">Garantia</label><input class="form-control" name="garantia"></div>
@@ -27,15 +27,19 @@
         <label class="form-check-label" for="baixa48">Baixa >48m</label>
       </div>
     </div>
-    <!-- Continue with other fields similarly... -->
-    <div class="mb-3">
-      <label class="form-label">Observações Contabilidade</label>
-      <textarea class="form-control" name="obs_contabilidade"></textarea>
+
+    <!-- Campos de Parcelas -->
+    <div class="row mb-3">
+      <div class="col"><label class="form-label">Parcelas</label><input type="number" class="form-control" name="parcelas" min="1" value="1"></div>
+      <div class="col"><label class="form-label">Parcelas Restantes</label><input type="number" class="form-control" name="parcelas_restantes" min="0" value="1"></div>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Observações Contas a Receber</label>
-      <textarea class="form-control" name="obs_contas_receber"></textarea>
+    <div class="row mb-3">
+      <div class="col"><label class="form-label">Valor das Parcelas</label><input type="number" step="0.01" class="form-control" name="valor_das_parcelas"></div>
+      <div class="col"><label class="form-label">Vencimento das Parcelas</label><input type="date" class="form-control" name="vencimento_parcelas"></div>
     </div>
+
+    <div class="mb-3"><label class="form-label">Observações Contabilidade</label><textarea class="form-control" name="obs_contabilidade"></textarea></div>
+    <div class="mb-3"><label class="form-label">Observações Contas a Receber</label><textarea class="form-control" name="obs_contas_receber"></textarea></div>
     <button type="submit" class="btn btn-success">Salvar</button>
   </form>
 </div>
