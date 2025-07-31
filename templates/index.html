@@ -1,99 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Sistemas de Cobrança</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
-  <style>
-    header {
-      background-color: {{ cor_primaria }};
-      color: #fff;
-      padding: 1rem;
-    }
-    footer {
-      background-color: {{ cor_escura }};
-      color: #fff;
-      text-align: center;
-      padding: 0.5rem;
-      margin-top: 2rem;
-    }
-    .btn-primary,
-    .btn-success {
-      background-color: {{ cor_primaria }} !important;
-      border-color: {{ cor_primaria }} !important;
-    }
-    .btn-primary:hover,
-    .btn-success:hover {
-      background-color: {{ cor_escura }} !important;
-      border-color: {{ cor_escura }} !important;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container">
-      <h1 class="mb-0">Sistemas de Cobrança</h1>
-    </div>
-  </header>
-
-  <main class="container py-4">
-    <div class="d-flex justify-content-start mb-3 gap-2">
-      <a href="{{ url_for('novo') }}" class="btn btn-success">Novo Contrato</a>
-      <a href="{{ url_for('exportar') }}" class="btn btn-success">Exportar Excel</a>
-    </div>
-
-    <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>CPF</th>
-            <th>Cliente</th>
-            <th>Contrato</th>
-            <th>Tipo</th>
-            <th>Valor do Contrato</th>
-            <th>Valor Pago</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in contratos %}
-          <tr>
-            <td>{{ c.cpf or '—' }}</td>
-            <td>{{ c.cliente or '—' }}</td>
-            <td>{{ c.numero or '—' }}</td>
-            <td>{{ c.tipo_contrato or '—' }}</td>
-            <td>R$ {{ "%.2f"|format(c.valor or 0) }}</td>
-            <td>
-              R$ {{
-                c.parcelas_list
-                  | selectattr('quitada')
-                  | map(attribute='valor')
-                  | sum
-                  | round(2)
-              }}
-            </td>
-            <td class="gap-1">
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Ver</a>
-              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-sm btn-primary">Parcelas</a>
-            </td>
-          </tr>
-          {% else %}
-          <tr>
-            <td colspan="7" class="text-center">Nenhum contrato cadastrado.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container">
-      Desenvolvido com Flask
-    </div>
-  </footer>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Sistema de Cobrança{% endblock %}
+{% block body %}
+<div class="container mt-4">
+  <h1>Sistemas de Cobrança</h1>
+  <p>
+    <a href="{{ url_for('novo') }}" class="btn btn-primary">Novo Contrato</a>
+    <a href="{{ url_for('exportar') }}" class="btn btn-secondary">Exportar Excel</a>
+  </p>
+  <table class="table table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>CPF</th>
+        <th>Cliente</th>
+        <th>Contrato</th>
+        <th>Tipo</th>
+        <th>Valor do Contrato</th>
+        <th>Valor Pago</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for c in contratos %}
+      <tr>
+        <td>{{ c.cpf or '-' }}</td>
+        <td>{{ c.cliente or '-' }}</td>
+        <td>{{ c.numero or '-' }}</td>
+        <td>{{ c.tipo_contrato or '-' }}</td>
+        <td>R$ {{ "{:,.2f}".format(c.valor or 0) }}</td>
+        <td>R$ {{ "{:,.2f}".format(valor_pago[c.id] or 0) }}</td>
+        <td>
+          <a href="{{ url_for('ver_contrato', id=c.id) }}">Ver</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

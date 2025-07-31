@@ -1,15 +1,29 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Novo Contrato{% endblock %}
-{% block content %}
-<form method="post">
-<label>Data Contrato: <input type="date" name="data_contrato"></label>
-<label>Cliente: <input type="text" name="cliente"></label>
-<label>Contrato (número): <input type="text" name="numero"></label>
-<label>Tipo Contrato: <input type="text" name="tipo_contrato"></label>
-<label>Garantia: <input type="text" name="garantia"></label>
-<label>Valor: <input type="number" name="valor" step="0.01"></label>
-<label>Parcelas: <input type="number" name="parcelas"></label>
-<label>Vencimento 1ª Parcela: <input type="date" name="vencimento_parcelas"></label>
-<button class="btn" type="submit">Salvar</button>
-</form>
+{% block body %}
+<div class="container mt-4">
+  <h2>Novo Contrato</h2>
+  <form method="post">
+    <div class="mb-3">
+      <label for="cpf" class="form-label">CPF</label>
+      <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00">
+    </div>
+    <div class="mb-3">
+      <label for="data_contrato" class="form-label">Data Contrato</label>
+      <input type="date" class="form-control" id="data_contrato" name="data_contrato">
+    </div>
+    <!-- restante dos campos como antes -->
+    <div class="mb-3"><label class="form-label">Cliente</label><input class="form-control" name="cliente"></div>
+    <div class="mb-3"><label class="form-label">Contrato (número)</label><input class="form-control" name="numero"></div>
+    <div class="mb-3"><label class="form-label">Tipo Contrato</label><input class="form-control" name="tipo_contrato"></div>
+    <div class="mb-3"><label class="form-label">Garantia</label><input class="form-control" name="garantia"></div>
+    <div class="mb-3"><label class="form-label">Valor</label><input type="number" step="0.01" class="form-control" name="valor"></div>
+    <div class="mb-3"><label class="form-label">Parcelas</label><input type="number" class="form-control" name="parcelas"></div>
+    <div class="mb-3">
+      <label for="vencimento_parcelas" class="form-label">Vencimento 1ª Parcela</label>
+      <input type="date" class="form-control" id="vencimento_parcelas" name="vencimento_parcelas">
+    </div>
+    <button class="btn btn-success">Salvar</button>
+  </form>
+</div>
 {% endblock %}
