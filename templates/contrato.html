@@ -1,29 +1,142 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends 'base.html' %}
+{% block body %}
 <div class="container py-4">
-  <h2>Parcelas do Contrato {{ contrato.numero }}</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr><th>#</th><th>Vencimento</th><th>Valor</th><th>Quitada?</th></tr>
-    </thead>
-    <tbody>
-      {% for p in parcelas %}
-      <tr>
-        <td>{{ p.numero }}</td>
-        <td>{{ p.vencimento.strftime('%d/%m/%Y') }}</td>
-        <td>R$ {{ "%.2f"|format(p.valor) }}</td>
-        <td>
-          {% if p.quitada %}
-            ✅
-          {% else %}
-            <form method="post" action="{{ url_for('quitar_parcela', id=p.id) }}">
-              <button class="btn btn-sm btn-primary">Quitar</button>
-            </form>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <h1>Info: Contrato {{ contrato.numero }}</h1>
+  <form method="POST">
+    <div class="row gy-3">
+      <!-- Campos principais -->
+      <div class="col-md-4">
+        <label class="form-label">CPF</label>
+        <input type="text" name="cpf" class="form-control" value="{{ contrato.cpf or '' }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Data Contrato</label>
+        <input type="date" name="data_contrato" class="form-control" value="{{ contrato.data_contrato|default('', true) }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Cliente</label>
+        <input type="text" name="cliente" class="form-control" value="{{ contrato.cliente or '' }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Contrato (nº)</label>
+        <input type="text" name="numero" class="form-control" value="{{ contrato.numero or '' }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Tipo Contrato</label>
+        <input type="text" name="tipo_contrato" class="form-control" value="{{ contrato.tipo_contrato or '' }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Garantia</label>
+        <input type="text" name="garantia" class="form-control" value="{{ contrato.garantia or '' }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Valor Contrato</label>
+        <input type="number" step="0.01" name="valor" class="form-control" value="{{ contrato.valor or 0 }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Parcelas</label>
+        <input type="number" name="parcelas" class="form-control" value="{{ contrato.parcelas or 0 }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Parcelas Restantes</label>
+        <input type="number" name="parcelas_restantes" class="form-control" value="{{ contrato.parcelas_restantes or 0 }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Vencimento 1ª Parcela</label>
+        <input type="date" name="vencimento_parcelas" class="form-control" value="{{ contrato.vencimento_parcelas|default('', true) }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Valor Pago</label>
+        <input type="text" readonly class="form-control" value="R$ {{ contrato.parcelas_list|selectattr('quitada')|map(attribute='valor')|sum | round(2) }}">
+      </div>
+
+      <!-- Campos complementares -->
+      <div class="col-12 pt-3"><h5>Campos Complementares</h5></div>
+      <div class="col-md-4">
+        <label class="form-label">Baixa acima de 48 meses</label><br>
+        <input type="checkbox" name="baixa_acima_48_meses" {% if contrato.baixa_acima_48_meses %}checked{% endif %}>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Valor Abatido</label>
+        <input type="number" step="0.01" name="valor_abatido" class="form-control" value="{{ contrato.valor_abatido or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Ganho</label>
+        <input type="number" step="0.01" name="ganho" class="form-control" value="{{ contrato.ganho or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Custas</label>
+        <input type="number" step="0.01" name="custas" class="form-control" value="{{ contrato.custas or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Custas Deduzidas</label>
+        <input type="number" step="0.01" name="custas_deduzidas" class="form-control" value="{{ contrato.custas_deduzidas or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Protesto</label>
+        <input type="number" step="0.01" name="protesto" class="form-control" value="{{ contrato.protesto or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Protesto Deduzido</label>
+        <input type="number" step="0.01" name="protesto_deduzido" class="form-control" value="{{ contrato.protesto_deduzido or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Honorário</label>
+        <input type="number" step="0.01" name="honorario" class="form-control" value="{{ contrato.honorario or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Honorário Repassado</label>
+        <input type="number" step="0.01" name="honorario_repassado" class="form-control" value="{{ contrato.honorario_repassado or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Alvará</label>
+        <input type="number" step="0.01" name="alvara" class="form-control" value="{{ contrato.alvara or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Alvará Recebido</label>
+        <input type="number" step="0.01" name="alvara_recebido" class="form-control" value="{{ contrato.alvara_recebido or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Valor de Entrada</label>
+        <input type="number" step="0.01" name="valor_entrada" class="form-control" value="{{ contrato.valor_entrada or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Vencimento Entrada</label>
+        <input type="date" name="vencimento_entrada" class="form-control" value="{{ contrato.vencimento_entrada|default('',true) }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Valor PG com Boleto</label>
+        <input type="number" step="0.01" name="valor_pg_boleto" class="form-control" value="{{ contrato.valor_pg_boleto or 0 }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Data PG Boleto</label>
+        <input type="date" name="data_pg_boleto" class="form-control" value="{{ contrato.data_pg_boleto|default('',true) }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Data da Baixa</label>
+        <input type="date" name="data_baixa" class="form-control" value="{{ contrato.data_baixa|default('',true) }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Qtd. Boletos Emitidos</label>
+        <input type="number" name="quantidade_boletos_emitidos" class="form-control" value="{{ contrato.quantidade_boletos_emitidos or 0 }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label">OBS para Contabilidade</label>
+        <textarea name="obs_contabilidade" class="form-control">{{ contrato.obs_contabilidade or '' }}</textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">OBS do Contas a Receber</label>
+        <textarea name="obs_contas_receber" class="form-control">{{ contrato.obs_contas_receber or '' }}</textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Valor a Repassar p/ Escritório</label>
+        <input type="number" step="0.01" name="valor_repassado_escritorio" class="form-control" value="{{ contrato.valor_repassado_escritorio or 0 }}">
+      </div>
+      <div class="col-12 text-end pt-3">
+        <button class="btn btn-success">Salvar</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary ms-2">Voltar</a>
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock %}
