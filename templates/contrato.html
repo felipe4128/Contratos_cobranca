@@ -1,98 +1,29 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-<h2>Contrato {{ contrato.numero }}</h2>
-<form method="post">
-  <div class="row mb-3">
-    <div class="col">
-      <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf" value="{{ contrato.cpf }}">
-    </div>
-    <div class="col">
-      <label for="data_contrato" class="form-label">Data Contrato</label>
-      <input type="date" class="form-control" id="data_contrato" name="data_contrato"
-             value="{{ contrato.data_contrato|default('',true) }}">
-    </div>
-  </div>
-  <div class="mb-3">
-    <label for="cliente" class="form-label">Cliente</label>
-    <input type="text" class="form-control" id="cliente" name="cliente" value="{{ contrato.cliente }}">
-  </div>
-  <div class="row mb-3">
-    <div class="col">
-      <label for="numero" class="form-label">Contrato (número)</label>
-      <input type="text" class="form-control" id="numero" name="numero" value="{{ contrato.numero }}">
-    </div>
-    <div class="col">
-      <label for="tipo_contrato" class="form-label">Tipo Contrato</label>
-      <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato" value="{{ contrato.tipo_contrato }}">
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="col">
-      <label for="garantia" class="form-label">Garantia</label>
-      <input type="text" class="form-control" id="garantia" name="garantia" value="{{ contrato.garantia }}">
-    </div>
-    <div class="col">
-      <label for="valor" class="form-label">Valor</label>
-      <input type="number" step="0.01" class="form-control" id="valor" name="valor" value="{{ contrato.valor }}">
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="col">
-      <label for="parcelas" class="form-label">Parcelas</label>
-      <input type="number" class="form-control" id="parcelas" name="parcelas" value="{{ contrato.parcelas }}">
-    </div>
-    <div class="col">
-      <label for="parcelas_restantes" class="form-label">Parcelas Restantes</label>
-      <input type="number" class="form-control" id="parcelas_restantes" name="parcelas_restantes" value="{{ contrato.parcelas_restantes }}">
-    </div>
-  </div>
-  <div class="mb-3">
-    <label for="vencimento_parcelas" class="form-label">Vencimento 1ª Parcela</label>
-    <input type="date" class="form-control" id="vencimento_parcelas" name="vencimento_parcelas"
-           value="{{ contrato.vencimento_parcelas|default('',true) }}">
-  </div>
-  <div class="mb-3">
-    <label for="demais_info" class="form-label">Demais Informações</label>
-    <textarea class="form-control" id="demais_info" name="demais_info" rows="5">{{ contrato.demais_info or '' }}</textarea>
-  </div>
-  <button type="submit" class="btn btn-success">Salvar</button>
-</form>
-
-<!-- Parcelas em card separado -->
-<div class="card mt-4">
-  <div class="card-header text-white" style="background-color: {{ cor_primaria }};">
-    Parcelas
-  </div>
-  <div class="card-body p-0">
-    <table class="table mb-0">
-      <thead class="thead-light">
-        <tr>
-          <th>#</th>
-          <th>Vencimento</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for p in parcelas %}
-        <tr>
-          <td>{{ p.numero }}</td>
-          <td>{{ p.vencimento.strftime('%d/%m/%Y') }}</td>
-          <td>R$ {{ '%.2f'|format(p.valor) }}</td>
-          <td>{{ 'Quitada' if p.quitada else 'Pendente' }}</td>
-          <td>
-            {% if not p.quitada %}
+<div class="container py-4">
+  <h2>Parcelas do Contrato {{ contrato.numero }}</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr><th>#</th><th>Vencimento</th><th>Valor</th><th>Quitada?</th></tr>
+    </thead>
+    <tbody>
+      {% for p in parcelas %}
+      <tr>
+        <td>{{ p.numero }}</td>
+        <td>{{ p.vencimento.strftime('%d/%m/%Y') }}</td>
+        <td>R$ {{ "%.2f"|format(p.valor) }}</td>
+        <td>
+          {% if p.quitada %}
+            ✅
+          {% else %}
             <form method="post" action="{{ url_for('quitar_parcela', id=p.id) }}">
-              <button class="btn btn-sm btn-success">Quitar</button>
+              <button class="btn btn-sm btn-primary">Quitar</button>
             </form>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}

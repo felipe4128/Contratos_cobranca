@@ -1,28 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Novo Contrato</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg" style="background-color: #003641;">
-  <span class="navbar-brand text-white">Novo Contrato</span>
-</nav>
-<div class="container my-4">
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h2>Novo Contrato</h2>
   <form method="post">
-    <div class="form-group"><label>CPF</label><input type="text" name="cpf" class="form-control" required></div>
-    <div class="form-group"><label>Data Contrato</label><input type="date" name="data_contrato" class="form-control"></div>
-    <div class="form-group"><label>Cliente</label><input type="text" name="cliente" class="form-control"></div>
-    <div class="form-group"><label>Contrato (número)</label><input type="text" name="numero" class="form-control"></div>
-    <div class="form-group"><label>Tipo Contrato</label><input type="text" name="tipo_contrato" class="form-control"></div>
-    <div class="form-group"><label>Garantia</label><input type="text" name="garantia" class="form-control"></div>
-    <div class="form-group"><label>Valor</label><input type="number" step="0.01" name="valor" class="form-control"></div>
-    <div class="form-group"><label>Parcelas</label><input type="number" name="parcelas" class="form-control"></div>
-    <div class="form-group"><label>Vencimento 1ª Parcela</label><input type="date" name="vencimento_parcelas" class="form-control"></div>
+    <div class="row mb-3">
+      <div class="col"><label>CPF</label><input class="form-control" name="cpf"></div>
+      <div class="col"><label>Data Contrato</label><input type="date" class="form-control" name="data_contrato"></div>
+    </div>
+    <div class="mb-3"><label>Cliente</label><input class="form-control" name="cliente"></div>
+    <div class="row mb-3">
+      <div class="col"><label>Contrato (número)</label><input class="form-control" name="numero"></div>
+      <div class="col"><label>Tipo Contrato</label><input class="form-control" name="tipo_contrato"></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col"><label>Garantia</label><input class="form-control" name="garantia"></div>
+      <div class="col"><label>Valor</label><input type="number" step="0.01" class="form-control" name="valor"></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col"><label>Parcelas</label><input type="number" class="form-control" name="parcelas"></div>
+      <div class="col"><label>Vencimento 1ª Parcela</label><input type="date" class="form-control" name="vencimento_parcelas"></div>
+    </div>
     <button class="btn btn-success">Salvar</button>
   </form>
 </div>
-<footer class="bg-dark text-white text-center py-3">Desenvolvido com Flask</footer>
-</body>
-</html>
+{% endblock %}
