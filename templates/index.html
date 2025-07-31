@@ -1,41 +1,58 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container py-4">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>CPF</th>
-        <th>Cliente</th>
-        <th>Contrato</th>
-        <th>Tipo</th>
-        <th>Valor</th>
-        <th>Valor Pago</th>
-        <th>Parcelas</th>
-        <th>Info</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for c in contratos %}
-      <tr>
-        <td>{{ c.cpf }}</td>
-        <td>{{ c.cliente }}</td>
-        <td>{{ c.numero }}</td>
-        <td>{{ c.tipo_contrato }}</td>
-        <td>R$ {{ "%.2f"|format(c.valor) }}</td>
-        <td>R$ {{ "%.2f"|format(valor_pago[c.id] or 0) }}</td>
-        <td>
-          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('ver_contrato', id=c.id) }}">
-            Parcelas
-          </a>
-        </td>
-        <td>
-          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('editar_info', id=c.id) }}">
-            Info
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% endblock %}
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <title>Sistemas de Cobrança</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark px-4">
+      <a class="navbar-brand" href="#">Sistemas de Cobrança</a>
+      <div>
+        <a href="{{ url_for('novo') }}" class="btn btn-success">Novo Contrato</a>
+        <a href="{{ url_for('exportar') }}" class="btn btn-primary">Exportar Excel</a>
+      </div>
+    </nav>
+    <div class="container my-4">
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>CPF</th>
+            <th>Cliente</th>
+            <th>Contrato</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Valor Pago</th>
+            <th>Parcelas</th>
+            <th>Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in contratos %}
+          <tr>
+            <td>{{ c.cooperado }}</td>
+            <td>{{ c.cliente }}</td>
+            <td>{{ c.contrato_numero }}</td>
+            <td>{{ c.tipo_contrato }}</td>
+            <td>R$ {{ "%.2f"|format(c.valor_sistema) }}</td>
+            <td>R$ {{ "%.2f"|format(valor_pago[c.id]) }}</td>
+            <td>
+              <a href="{{ url_for('ver_parcelas', id=c.id) }}" class="btn btn-outline-primary btn-sm">
+                Parcelas
+              </a>
+            </td>
+            <td>
+              <a href="{{ url_for('ver_contrato', id=c.id) }}" class="btn btn-outline-secondary btn-sm">
+                Info
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <footer class="bg-dark text-white text-center py-2">
+      Desenvolvido com Flask
+    </footer>
+  </body>
+</html>

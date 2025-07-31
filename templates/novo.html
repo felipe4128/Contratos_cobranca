@@ -9,22 +9,129 @@
     <div class="container">
       <h1>Novo Contrato</h1>
       <form method="post">
-        <div class="row">
-          <!-- Exemplo de alguns campos: basta repetir para todos os restantes -->
-          <div class="col-md-4 mb-3">
-            <label for="cooperado" class="form-label">Cooperado</label>
-            <input type="text" class="form-control" id="cooperado" name="cooperado">
+        <div class="row gx-3">
+          <!-- 1ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Cooperado (CPF)</label>
+            <input name="cooperado" class="form-control" required>
           </div>
-          <div class="col-md-4 mb-3">
-            <label for="contrato_numero" class="form-label">Contrato</label>
-            <input type="text" class="form-control" id="contrato_numero" name="contrato_numero">
+          <div class="col-md-4">
+            <label class="form-label">Contrato</label>
+            <input name="contrato_numero" class="form-control" required>
           </div>
-          <div class="col-md-4 mb-3">
-            <label for="tipo_contrato" class="form-label">Tipo</label>
-            <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato">
+          <div class="col-md-4">
+            <label class="form-label">Tipo</label>
+            <input name="tipo_contrato" class="form-control">
+          </div>
+          <!-- 2ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Garantia</label>
+            <input name="garantia" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Valor do Contrato no Sistema</label>
+            <input name="valor_sistema" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Baixa acima de 48 meses</label>
+            <input name="baixa_48m" type="number" step="0.01" class="form-control">
+          </div>
+          <!-- 3ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Valor Abatido no Contrato</label>
+            <input name="valor_abatido" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Ganho</label>
+            <input name="ganho" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Custas</label>
+            <input name="custas" type="number" step="0.01" class="form-control">
+          </div>
+          <!-- 4ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Custas Deduzidas</label>
+            <input name="custas_deduzidas" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Protesto</label>
+            <input name="protesto" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Protesto Deduzido</label>
+            <input name="protesto_deduzido" type="number" step="0.01" class="form-control">
+          </div>
+          <!-- 5ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Honorário</label>
+            <input name="honorario" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Honorário Repassado</label>
+            <input name="honorario_repassado" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Alvará</label>
+            <input name="alvara" type="number" step="0.01" class="form-control">
+          </div>
+          <!-- 6ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Alvará Recebido</label>
+            <input name="alvara_recebido" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Valor de Entrada</label>
+            <input name="valor_entrada" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Vencimento Entrada</label>
+            <input name="vencimento_entrada" type="date" class="form-control">
+          </div>
+          <!-- 7ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Valor das Parcelas (total)</label>
+            <input name="valor_parcelas_totais" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Parcelas</label>
+            <input name="parcelas" type="number" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Vencimento 1ª Parcela</label>
+            <input name="vencimento_parcelas" type="date" class="form-control">
+          </div>
+          <!-- 8ª linha -->
+          <div class="col-md-4">
+            <label class="form-label">Qtde Boletos Emitidos</label>
+            <input name="boletos_emitidos" type="number" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Valor PG c/ Boleto</label>
+            <input name="valor_pg_boleto" type="number" step="0.01" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Data PG Boleto</label>
+            <input name="data_pg_boleto" type="date" class="form-control">
+          </div>
+          <!-- 9ª linha -->
+          <div class="col-12 mb-3">
+            <label class="form-label">Data da Baixa</label>
+            <input name="data_baixa" type="date" class="form-control">
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">Obs para Contabilidade</label>
+            <textarea name="obs_contabilidade" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">Obs do Contas a Receber</label>
+            <textarea name="obs_contas_receber" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="col-12 mb-4">
+            <label class="form-label">Valor a Ser Repassado p/ Escritório (Hon.)</label>
+            <input name="repasse_escritorio" type="number" step="0.01" class="form-control">
           </div>
         </div>
-        <!-- Aqui inclua todos os outros campos seguindo a mesma estrutura -->
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
       </form>
