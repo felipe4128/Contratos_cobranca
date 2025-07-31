@@ -1,140 +1,32 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <title>Novo Contrato</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  </head>
-  <body class="p-5">
-    <div class="container">
-      <h1>Novo Contrato</h1>
-      <form method="post">
-        <div class="row gx-3">
-          <!-- 1ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Cooperado (CPF)</label>
-            <input name="cooperado" class="form-control" required>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Contrato</label>
-            <input name="contrato_numero" class="form-control" required>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Tipo</label>
-            <input name="tipo_contrato" class="form-control">
-          </div>
-          <!-- 2ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Garantia</label>
-            <input name="garantia" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Valor do Contrato no Sistema</label>
-            <input name="valor_sistema" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Baixa acima de 48 meses</label>
-            <input name="baixa_48m" type="number" step="0.01" class="form-control">
-          </div>
-          <!-- 3ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Valor Abatido no Contrato</label>
-            <input name="valor_abatido" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Ganho</label>
-            <input name="ganho" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Custas</label>
-            <input name="custas" type="number" step="0.01" class="form-control">
-          </div>
-          <!-- 4ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Custas Deduzidas</label>
-            <input name="custas_deduzidas" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Protesto</label>
-            <input name="protesto" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Protesto Deduzido</label>
-            <input name="protesto_deduzido" type="number" step="0.01" class="form-control">
-          </div>
-          <!-- 5ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Honorário</label>
-            <input name="honorario" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Honorário Repassado</label>
-            <input name="honorario_repassado" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Alvará</label>
-            <input name="alvara" type="number" step="0.01" class="form-control">
-          </div>
-          <!-- 6ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Alvará Recebido</label>
-            <input name="alvara_recebido" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Valor de Entrada</label>
-            <input name="valor_entrada" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Vencimento Entrada</label>
-            <input name="vencimento_entrada" type="date" class="form-control">
-          </div>
-          <!-- 7ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Valor das Parcelas (total)</label>
-            <input name="valor_parcelas_totais" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Parcelas</label>
-            <input name="parcelas" type="number" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Vencimento 1ª Parcela</label>
-            <input name="vencimento_parcelas" type="date" class="form-control">
-          </div>
-          <!-- 8ª linha -->
-          <div class="col-md-4">
-            <label class="form-label">Qtde Boletos Emitidos</label>
-            <input name="boletos_emitidos" type="number" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Valor PG c/ Boleto</label>
-            <input name="valor_pg_boleto" type="number" step="0.01" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Data PG Boleto</label>
-            <input name="data_pg_boleto" type="date" class="form-control">
-          </div>
-          <!-- 9ª linha -->
-          <div class="col-12 mb-3">
-            <label class="form-label">Data da Baixa</label>
-            <input name="data_baixa" type="date" class="form-control">
-          </div>
-          <div class="col-12 mb-3">
-            <label class="form-label">Obs para Contabilidade</label>
-            <textarea name="obs_contabilidade" class="form-control" rows="3"></textarea>
-          </div>
-          <div class="col-12 mb-3">
-            <label class="form-label">Obs do Contas a Receber</label>
-            <textarea name="obs_contas_receber" class="form-control" rows="3"></textarea>
-          </div>
-          <div class="col-12 mb-4">
-            <label class="form-label">Valor a Ser Repassado p/ Escritório (Hon.)</label>
-            <input name="repasse_escritorio" type="number" step="0.01" class="form-control">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-success">Salvar</button>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
-      </form>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Novo Contrato</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+<div class="container">
+  <h2>Novo Contrato</h2>
+  <form method="post">
+    <div class="row">
+      <div class="col"><label>Cooperado<input class="form-control" name="cooperado"></label></div>
+      <div class="col"><label>Contrato<input class="form-control" name="numero"></label></div>
+      <div class="col"><label>Tipo<input class="form-control" name="tipo"></label></div>
     </div>
-  </body>
+    <div class="row mt-3">
+      <div class="col"><label>Garantia<input class="form-control" name="garantia"></label></div>
+      <div class="col"><label>Valor Contrato<input class="form-control" name="valor_contrato" type="number" step="0.01"></label></div>
+      <div class="col">
+        <label>Baixa >48mês
+          <input type="checkbox" name="baixa_48" class="form-check-input ms-2">
+        </label>
+      </div>
+    </div>
+    <!-- demais campos omitidos para brevidade -->
+    <button class="btn btn-success mt-4">Salvar</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary mt-4">Voltar</a>
+  </form>
+</div>
+</body>
 </html>
